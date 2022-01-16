@@ -2,25 +2,29 @@ package de.evoila.personalAbteilung.dtos;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Data
-public class StelleDto {
+public class BewerberDto {
 
     private Long id;
 
     @NotNull
-    private String titel;
+    private String vorName;
 
     @NotNull
-    private String beschreibung;
+    private String nachName;
+
+    @Email
+    private String email;
 
     @NotNull
     @Min(value = 1584)
-    private Long maxGehalt;
+    private Long wunschGehalt;
 
-    List<BewerberDto> bewerberDtoList;
+    @NotNull
+    private StelleDto stelleDto;
 
 }
