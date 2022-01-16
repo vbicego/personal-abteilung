@@ -7,20 +7,20 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-public class StelleDto {
+public class PositionDto {
 
     private Long id;
 
     @NotNull
-    private String titel;
+    private String title;
 
     @NotNull
-    private String beschreibung;
+    private String description;
 
     @NotNull
     @Min(value = 1584)
-    private Long maxGehalt;
+    private Long maxSalary;
 
-    List<BewerberDto> bewerberDtoList;
+    List<CandidateDto> candidateDtoList;
 
 }

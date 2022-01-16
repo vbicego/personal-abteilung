@@ -5,31 +5,35 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 @RequiredArgsConstructor
 @Setter
 @Getter
-public class Stelle {
+public class Candidate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    private String titel;
+    private String firstName;
 
     @NotNull
-    private String beschreibung;
+    private String lastName;
+
+    @Email
+    private String email;
 
     @NotNull
     @Min(value = 1584)
-    private Long maxGehalt;
+    private Long desiredSalary;
 
-    @OneToMany
-    List<Bewerber> bewerberList;
+    @NotNull
+    @ManyToOne
+    private Position position;
 
 }

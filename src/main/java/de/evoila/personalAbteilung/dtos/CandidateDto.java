@@ -7,24 +7,24 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class BewerberDto {
+public class CandidateDto {
 
     private Long id;
 
     @NotNull
-    private String vorName;
+    private String firstName;
 
     @NotNull
-    private String nachName;
+    private String lastName;
 
     @Email
     private String email;
 
     @NotNull
     @Min(value = 1584)
-    private Long wunschGehalt;
+    private Long desiredSalary;
 
     @NotNull
-    private StelleDto stelleDto;
+    private PositionDto positionDto;
 
 }

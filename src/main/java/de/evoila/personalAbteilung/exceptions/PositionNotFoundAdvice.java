@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class StelleNotFoundAdvice {
+public class PositionNotFoundAdvice {
 
     @ResponseBody
-    @ExceptionHandler(StelleNotFoundException.class)
+    @ExceptionHandler(PositionNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String stelleNotFoundHandler(StelleNotFoundException ex) {
+    String positionNotFoundHandler(PositionNotFoundException ex) {
         return ex.getMessage();
     }
 
