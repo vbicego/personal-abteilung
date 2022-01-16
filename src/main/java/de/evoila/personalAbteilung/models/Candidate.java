@@ -36,4 +36,11 @@ public class Candidate {
     @ManyToOne
     private Position position;
 
+    public Candidate(String firstName, String lastName, String email, Long desiredSalary, Position position) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.desiredSalary = desiredSalary;
+        this.position = position;
+    }
 }

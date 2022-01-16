@@ -32,4 +32,9 @@ public class Position {
     @OneToMany
     List<Candidate> candidateList;
 
+    public Position(String title, String description, Long maxSalary) {
+        this.title = title;
+        this.description = description;
+        this.maxSalary = maxSalary;
+    }
 }
