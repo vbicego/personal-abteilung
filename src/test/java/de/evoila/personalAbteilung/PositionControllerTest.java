@@ -55,7 +55,7 @@ public class PositionControllerTest {
 
     @Test
     public void findPositionByIdShouldReturnOkAndTheCorrespondentPosition() throws Exception {
-        Mockito.doReturn(p1Dto).when(positionService).findPositionById(1L);
+        Mockito.doReturn(objectMapper.writeValueAsString(p1Dto)).when(positionService).findPositionById(1L);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/position/1"))
@@ -69,6 +69,26 @@ public class PositionControllerTest {
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/position/5"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Position with id: 5 not found."));
+    }
+
+    @Test
+    public void findPositionByHrIdShouldReturnOkAndTheCorrespondentPosition() throws Exception {
+        Mockito.doReturn(objectMapper.writeValueAsString(p1Dto)).when(positionService).findPositionByIdHr(1L);
+
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/position/hr/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(p1Dto)));
+    }
+
+    @Test
+    public void findPositionByIdHrShouldReturnNotFoundWhenTheIdNotCorrespondToAnyPosition() throws Exception {
+        Mockito.when(positionService.findPositionByIdHr(5L)).thenThrow(new PositionNotFoundException(5L));
+
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/position/hr/5"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Position with id: 5 not found."));
     }

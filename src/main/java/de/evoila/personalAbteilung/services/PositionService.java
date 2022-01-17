@@ -1,5 +1,9 @@
 package de.evoila.personalAbteilung.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import de.evoila.personalAbteilung.PositionViews;
 import de.evoila.personalAbteilung.dtos.PositionDto;
 import de.evoila.personalAbteilung.exceptions.PositionNotFoundException;
 import de.evoila.personalAbteilung.models.Position;
@@ -18,6 +22,7 @@ public class PositionService {
 
     private final PositionRepository positionRepository;
     private final ModelMapper modelMapper;
+    private final ObjectMapper mapper;
 
     public List<PositionDto> getAllPositions() {
         List<Position> positionList = positionRepository.findAll();
@@ -26,9 +31,14 @@ public class PositionService {
                 .collect(Collectors.toList());
     }
 
-    public PositionDto findPositionById(Long id) {
+    public String findPositionById(Long id) throws JsonProcessingException {
         Position foundPosition = positionRepository.findById(id).orElseThrow(() -> new PositionNotFoundException(id));
-        return modelMapper.map(foundPosition, PositionDto.class);
+        return mapper.writerWithView(PositionViews.Normal.class).writeValueAsString(modelMapper.map(foundPosition, PositionDto.class));
+    }
+
+    public String findPositionByIdHr(Long id) throws JsonProcessingException {
+        Position foundPosition = positionRepository.findById(id).orElseThrow(() -> new PositionNotFoundException(id));
+        return mapper.writerWithView(PositionViews.Hr.class).writeValueAsString(modelMapper.map(foundPosition, PositionDto.class));
     }
 
     public PositionDto createPosition(PositionDto positionToCreate) {

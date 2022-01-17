@@ -67,7 +67,7 @@ public class CandidateControllerTest {
     }
 
     @Test
-    public void findCandidateShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
+    public void findCandidateByIdShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
         Mockito.when(candidateService.findCandidateById(5L)).thenThrow(new CandidateNotFoundException(5L));
 
         this.mockMvc.perform(MockMvcRequestBuilders
