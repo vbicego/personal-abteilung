@@ -1,37 +1,43 @@
 package de.evoila.personalAbteilung;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.evoila.personalAbteilung.dtos.CandidateDto;
-import de.evoila.personalAbteilung.dtos.PositionDto;
 import de.evoila.personalAbteilung.models.Candidate;
-import de.evoila.personalAbteilung.models.Position;
 import de.evoila.personalAbteilung.repositories.CandidateRepository;
 import de.evoila.personalAbteilung.services.CandidateService;
+import de.evoila.personalAbteilung.services.CandidateServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class CandidateServiceTest {
 
-    @Autowired
-    CandidateService candidateService;
+    @InjectMocks
+    CandidateServiceImp candidateServiceImp;
 
-    @MockBean
+    @Mock
     CandidateRepository candidateRepository;
 
-    private PositionDto p1Dto;
-    private Position p1;
+    @Mock
+    ObjectMapper objectMapper;
+
+    @Mock
+    ModelMapper modelMapper;
 
     private CandidateDto c1Dto;
     private CandidateDto c2Dto;
@@ -43,16 +49,33 @@ public class CandidateServiceTest {
 
     @BeforeEach
     public void init() {
-        p1Dto = new PositionDto("Backend", "AB", 5000L);
-        p1 = new Position("Backend", "AB", 5000L);
+        MockitoAnnotations.initMocks(this);
 
-        c1Dto = new CandidateDto("Peter", "Parker", "pp@gmail.com", 3500L, p1Dto);
-        c2Dto = new CandidateDto("Mary", "Jane", "mj@gmail.com", 4500L, p1Dto);
+        c1Dto = new CandidateDto("Peter", "Parker", "pp@gmail.com", 3500L);
+        c2Dto = new CandidateDto("Mary", "Jane", "mj@gmail.com", 4500L);
         candidateDtoList = List.of(c1Dto, c2Dto);
 
-        c1 = new Candidate("Peter", "Parker", "pp@gmail.com", 3500L, p1);
-        c2 = new Candidate("Mary", "Jane", "mj@gmail.com", 4500L, p1);
+        c1 = new Candidate("Peter", "Parker", "pp@gmail.com", 3500L);
+        c2 = new Candidate("Mary", "Jane", "mj@gmail.com", 4500L);
         candidateList = List.of(c1, c2);
+    }
+
+    @Test
+    public void getAllCandidatesShouldReturnListOfCandidatesDtos() {
+        Mockito.when(candidateRepository.findAll()).thenReturn(candidateList);
+        Mockito.when(modelMapper.map(c1, CandidateDto.class)).thenReturn(c1Dto);
+        Mockito.when(modelMapper.map(c2, CandidateDto.class)).thenReturn(c2Dto);
+
+        assertEquals(candidateDtoList, candidateServiceImp.getAllCandidates());
+    }
+
+    @Test
+    public void createCandidateShouldReturnCandidateDto() {
+       Mockito.doReturn(c1).when(candidateRepository).save(c1);
+       Mockito.when(modelMapper.map(c1, CandidateDto.class)).thenReturn(c1Dto);
+       Mockito.when(modelMapper.map(c1Dto, Candidate.class)).thenReturn(c1);
+
+        assertEquals(c1Dto, candidateServiceImp.createCandidate(c1Dto));
     }
 
 }

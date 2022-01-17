@@ -1,5 +1,6 @@
 package de.evoila.personalAbteilung.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import de.evoila.personalAbteilung.dtos.CandidateDto;
 
 import java.util.List;
@@ -8,7 +9,9 @@ public interface CandidateService {
 
     public abstract List<CandidateDto> getAllCandidates();
 
-    public abstract CandidateDto findCandidateById(Long id);
+    public abstract String findCandidateByIdNormal(Long id) throws JsonProcessingException;
+
+    public abstract String findCandidateByIdHr(Long id) throws JsonProcessingException;
 
     public abstract CandidateDto createCandidate(CandidateDto candidateToCreate);
 

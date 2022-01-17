@@ -1,9 +1,11 @@
 package de.evoila.personalAbteilung.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.evoila.personalAbteilung.views.CandidateViews;
 import de.evoila.personalAbteilung.dtos.CandidateDto;
 import de.evoila.personalAbteilung.exceptions.CandidateNotFoundException;
 import de.evoila.personalAbteilung.models.Candidate;
-import de.evoila.personalAbteilung.models.Position;
 import de.evoila.personalAbteilung.repositories.CandidateRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,6 +21,7 @@ public class CandidateServiceImp implements CandidateService {
 
     private final CandidateRepository candidateRepository;
     private final ModelMapper modelMapper;
+    private final ObjectMapper objectMapper;
 
     @Override
     public List<CandidateDto> getAllCandidates() {
@@ -29,9 +32,15 @@ public class CandidateServiceImp implements CandidateService {
     }
 
     @Override
-    public CandidateDto findCandidateById(Long id) {
+    public String findCandidateByIdNormal(Long id) throws JsonProcessingException {
         Candidate foundCandidate = candidateRepository.findById(id).orElseThrow(() -> new CandidateNotFoundException(id));
-        return modelMapper.map(foundCandidate, CandidateDto.class);
+        return objectMapper.writerWithView(CandidateViews.Normal.class).writeValueAsString(modelMapper.map(foundCandidate, CandidateDto.class));
+    }
+
+    @Override
+    public String findCandidateByIdHr(Long id) throws JsonProcessingException {
+        Candidate foundCandidate = candidateRepository.findById(id).orElseThrow(() -> new CandidateNotFoundException(id));
+        return objectMapper.writerWithView(CandidateViews.Hr.class).writeValueAsString(modelMapper.map(foundCandidate, CandidateDto.class));
     }
 
     @Override
@@ -54,7 +63,6 @@ public class CandidateServiceImp implements CandidateService {
         foundCandidate.setLastName(candidateToUpdate.getLastName());
         foundCandidate.setEmail(candidateToUpdate.getEmail());
         foundCandidate.setDesiredSalary(candidateToUpdate.getDesiredSalary());
-        foundCandidate.setPosition(modelMapper.map(candidateToUpdate.getPositionDto(), Position.class));
 
         Candidate updatedCandidate = candidateRepository.save(foundCandidate);
         return modelMapper.map(updatedCandidate, CandidateDto.class);

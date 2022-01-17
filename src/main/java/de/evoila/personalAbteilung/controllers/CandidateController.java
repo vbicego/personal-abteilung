@@ -1,5 +1,6 @@
 package de.evoila.personalAbteilung.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import de.evoila.personalAbteilung.dtos.CandidateDto;
 import de.evoila.personalAbteilung.services.CandidateService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,13 @@ public class CandidateController {
     }
 
     @GetMapping("/{id}")
-    public CandidateDto findCandidateById(@PathVariable Long id) {
-        return candidateService.findCandidateById(id);
+    public String findCandidateById(@PathVariable Long id) throws JsonProcessingException {
+        return candidateService.findCandidateByIdNormal(id);
+    }
+
+    @GetMapping("/hr/{id}")
+    public String findCandidateByIdHr(@PathVariable Long id) throws JsonProcessingException {
+        return candidateService.findCandidateByIdHr(id);
     }
 
     @PostMapping

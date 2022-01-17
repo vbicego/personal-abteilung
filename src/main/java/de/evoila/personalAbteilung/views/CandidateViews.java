@@ -1,6 +1,6 @@
-package de.evoila.personalAbteilung;
+package de.evoila.personalAbteilung.views;
 
-public class PositionViews {
+public class CandidateViews {
 
     public static class Normal{};
 
