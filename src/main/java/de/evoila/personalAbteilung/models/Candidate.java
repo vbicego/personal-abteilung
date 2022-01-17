@@ -36,7 +36,7 @@ public class Candidate {
     private Long desiredSalary;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Position position;
 
     public Candidate(String firstName, String lastName, String email, Long desiredSalary, Position position) {

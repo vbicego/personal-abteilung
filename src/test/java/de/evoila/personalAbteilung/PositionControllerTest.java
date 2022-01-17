@@ -27,7 +27,7 @@ public class PositionControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     @MockBean
     PositionService positionService;
@@ -60,7 +60,7 @@ public class PositionControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/position/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(p1Dto)));
+                .andExpect(content().string(objectMapper.writeValueAsString(p1Dto)));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class PositionControllerTest {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/position/hr/1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(p1Dto)));
+                .andExpect(content().string(objectMapper.writeValueAsString(p1Dto)));
     }
 
     @Test
