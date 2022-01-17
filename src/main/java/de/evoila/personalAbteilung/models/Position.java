@@ -1,8 +1,10 @@
 package de.evoila.personalAbteilung.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Setter
 @Getter
+@ToString
 public class Position {
 
     @Id
@@ -28,9 +31,6 @@ public class Position {
     @NotNull
     @Min(value = 1584)
     private Long maxSalary;
-
-    @OneToMany
-    List<Candidate> candidateList;
 
     public Position(String title, String description, Long maxSalary) {
         this.title = title;

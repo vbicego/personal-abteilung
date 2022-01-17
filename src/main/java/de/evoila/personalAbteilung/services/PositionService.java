@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class PositionService {
 
     private final PositionRepository positionRepository;
-    private final CandidateService candidateService;
     private final ModelMapper modelMapper;
 
     public List<PositionDto> getAllPositions() {
@@ -48,7 +47,6 @@ public class PositionService {
         foundPosition.setTitle(positionToUpdate.getTitle());
         foundPosition.setDescription(positionToUpdate.getDescription());
         foundPosition.setMaxSalary(positionToUpdate.getMaxSalary());
-        foundPosition.setCandidateList(candidateService.convertListOfCandidateDtoIntoCandidate(positionToUpdate.getCandidateDtoList()));
 
         Position updatedPosition = positionRepository.save(foundPosition);
         return modelMapper.map(updatedPosition, PositionDto.class);

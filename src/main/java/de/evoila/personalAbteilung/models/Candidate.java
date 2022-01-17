@@ -1,8 +1,10 @@
 package de.evoila.personalAbteilung.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -13,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 @Setter
 @Getter
+@ToString
 public class Candidate {
 
     @Id

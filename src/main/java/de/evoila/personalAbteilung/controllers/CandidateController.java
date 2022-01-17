@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CandidateController {
 
-    private CandidateService candidateService;
+    private final CandidateService candidateService;
 
     @GetMapping
     public List<CandidateDto> getAllCandidates() {

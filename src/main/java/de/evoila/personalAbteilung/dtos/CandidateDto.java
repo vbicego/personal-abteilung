@@ -27,4 +27,12 @@ public class CandidateDto {
     @NotNull
     private PositionDto positionDto;
 
+    public CandidateDto(String firstName, String lastName, String email, Long desiredSalary, PositionDto positionDto) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.desiredSalary = desiredSalary;
+        this.positionDto = positionDto;
+    }
+
 }

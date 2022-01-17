@@ -1,7 +1,6 @@
 package de.evoila.personalAbteilung.services;
 
 import de.evoila.personalAbteilung.dtos.CandidateDto;
-import de.evoila.personalAbteilung.dtos.PositionDto;
 import de.evoila.personalAbteilung.exceptions.CandidateNotFoundException;
 import de.evoila.personalAbteilung.models.Candidate;
 import de.evoila.personalAbteilung.models.Position;
@@ -54,12 +53,6 @@ public class CandidateService {
 
         Candidate updatedCandidate = candidateRepository.save(foundCandidate);
         return modelMapper.map(updatedCandidate, CandidateDto.class);
-    }
-
-    public List<Candidate> convertListOfCandidateDtoIntoCandidate (List<CandidateDto> candidateDtoList){
-        return candidateDtoList.stream()
-                .map(candidateDto -> modelMapper.map(candidateDto, Candidate.class))
-                .collect(Collectors.toList());
     }
 
 }
