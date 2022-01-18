@@ -2,6 +2,7 @@ package de.evoila.personalAbteilung.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import de.evoila.personalAbteilung.dtos.CandidateDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

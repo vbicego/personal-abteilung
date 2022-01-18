@@ -33,8 +33,8 @@ public class CandidateController {
     }
 
     @PostMapping
-    public CandidateDto createCandidate(@RequestBody @Valid CandidateDto candidateToCreate) {
-        return candidateService.createCandidate(candidateToCreate);
+    public CandidateDto createCandidate(@RequestBody @Valid CandidateDto candidateToCreateDto) {
+        return candidateService.createCandidate(candidateToCreateDto);
     }
 
     @DeleteMapping("/{id}")

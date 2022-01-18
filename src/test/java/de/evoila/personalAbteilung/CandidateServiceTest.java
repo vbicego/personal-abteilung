@@ -1,10 +1,8 @@
 package de.evoila.personalAbteilung;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.evoila.personalAbteilung.dtos.CandidateDto;
 import de.evoila.personalAbteilung.models.Candidate;
 import de.evoila.personalAbteilung.repositories.CandidateRepository;
-import de.evoila.personalAbteilung.services.CandidateService;
 import de.evoila.personalAbteilung.services.CandidateServiceImp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,19 +10,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class CandidateServiceTest {
 
     @InjectMocks
@@ -32,12 +25,6 @@ public class CandidateServiceTest {
 
     @Mock
     CandidateRepository candidateRepository;
-
-    @Mock
-    ObjectMapper objectMapper;
-
-    @Mock
-    ModelMapper modelMapper;
 
     private CandidateDto c1Dto;
     private CandidateDto c2Dto;
@@ -48,8 +35,7 @@ public class CandidateServiceTest {
     private List<Candidate> candidateList;
 
     @BeforeEach
-    public void init() {
-        MockitoAnnotations.initMocks(this);
+    void setUp() {
 
         c1Dto = new CandidateDto("Peter", "Parker", "pp@gmail.com", 3500L);
         c2Dto = new CandidateDto("Mary", "Jane", "mj@gmail.com", 4500L);
@@ -61,19 +47,14 @@ public class CandidateServiceTest {
     }
 
     @Test
-    public void getAllCandidatesShouldReturnListOfCandidatesDtos() {
-        Mockito.when(candidateRepository.findAll()).thenReturn(candidateList);
-        Mockito.when(modelMapper.map(c1, CandidateDto.class)).thenReturn(c1Dto);
-        Mockito.when(modelMapper.map(c2, CandidateDto.class)).thenReturn(c2Dto);
-
-        assertEquals(candidateDtoList, candidateServiceImp.getAllCandidates());
-    }
-
-    @Test
     public void createCandidateShouldReturnCandidateDto() {
-       Mockito.doReturn(c1).when(candidateRepository).save(c1);
-       Mockito.when(modelMapper.map(c1, CandidateDto.class)).thenReturn(c1Dto);
-       Mockito.when(modelMapper.map(c1Dto, Candidate.class)).thenReturn(c1);
+        Mockito.when(candidateRepository.save(c1)).thenReturn(c1);
+
+        Candidate createdOne = candidateRepository.save(c1);
+
+        System.out.println();
+        System.out.println(createdOne.convertEntityToDto());
+        System.out.println();
 
         assertEquals(c1Dto, candidateServiceImp.createCandidate(c1Dto));
     }

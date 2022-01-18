@@ -1,9 +1,11 @@
 package de.evoila.personalAbteilung.dtos;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import de.evoila.personalAbteilung.models.Candidate;
 import de.evoila.personalAbteilung.views.CandidateViews;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -32,6 +34,10 @@ public class CandidateDto {
     @Min(value = 1584, message = "Desired salary must be at least 1584,00")
     @JsonView(CandidateViews.Hr.class)
     private Long desiredSalary;
+
+    public Candidate convertDtoToEntity (){
+        return new ModelMapper().map(this, Candidate.class);
+    }
 
     public CandidateDto(String firstName, String lastName, String email, Long desiredSalary) {
         this.firstName = firstName;

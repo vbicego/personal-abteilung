@@ -1,9 +1,11 @@
 package de.evoila.personalAbteilung.models;
 
+import de.evoila.personalAbteilung.dtos.CandidateDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.modelmapper.ModelMapper;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +30,10 @@ public class Candidate {
     private String email;
 
     private Long desiredSalary;
+
+    public CandidateDto convertEntityToDto(){
+        return new ModelMapper().map(this, CandidateDto.class);
+    }
 
     public Candidate(String firstName, String lastName, String email, Long desiredSalary) {
         this.firstName = firstName;
