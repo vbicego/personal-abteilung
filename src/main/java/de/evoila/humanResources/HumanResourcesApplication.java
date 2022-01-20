@@ -1,13 +1,13 @@
-package de.evoila.personalAbteilung;
+package de.evoila.humanResources;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PersonalAbteilungApplication {
+public class HumanResourcesApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PersonalAbteilungApplication.class, args);
+		SpringApplication.run(HumanResourcesApplication.class, args);
 	}
 
 }

@@ -1,8 +1,8 @@
-package de.evoila.personalAbteilung.dtos;
+package de.evoila.humanResources.dtos;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import de.evoila.personalAbteilung.models.Candidate;
-import de.evoila.personalAbteilung.views.CandidateViews;
+import de.evoila.humanResources.models.Candidate;
+import de.evoila.humanResources.views.CandidateViews;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;

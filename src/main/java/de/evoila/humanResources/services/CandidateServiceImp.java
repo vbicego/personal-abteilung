@@ -1,12 +1,9 @@
-package de.evoila.personalAbteilung.services;
+package de.evoila.humanResources.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.evoila.personalAbteilung.dtos.CandidateDto;
-import de.evoila.personalAbteilung.exceptions.CandidateNotFoundException;
-import de.evoila.personalAbteilung.models.Candidate;
-import de.evoila.personalAbteilung.repositories.CandidateRepository;
-import de.evoila.personalAbteilung.views.CandidateViews;
+import de.evoila.humanResources.dtos.CandidateDto;
+import de.evoila.humanResources.exceptions.CandidateNotFoundException;
+import de.evoila.humanResources.models.Candidate;
+import de.evoila.humanResources.repositories.CandidateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +16,6 @@ import java.util.stream.Collectors;
 public class CandidateServiceImp implements CandidateService {
 
     private final CandidateRepository candidateRepository;
-    private final ObjectMapper objectMapper;
 
     @Override
     public List<CandidateDto> getAllCandidates() {
@@ -30,24 +26,15 @@ public class CandidateServiceImp implements CandidateService {
     }
 
     @Override
-    public String findCandidateByIdNormal(Long id) throws JsonProcessingException {
+    public CandidateDto findCandidateById(Long id) {
         Candidate foundCandidate = candidateRepository.findById(id).orElseThrow(() -> new CandidateNotFoundException(id));
-        return objectMapper.writerWithView(CandidateViews.Normal.class).writeValueAsString(foundCandidate.convertEntityToDto());
-    }
-
-    @Override
-    public String findCandidateByIdHr(Long id) throws JsonProcessingException {
-        Candidate foundCandidate = candidateRepository.findById(id).orElseThrow(() -> new CandidateNotFoundException(id));
-        return objectMapper.writerWithView(CandidateViews.Hr.class).writeValueAsString(foundCandidate.convertEntityToDto());
+        return foundCandidate.convertEntityToDto();
     }
 
     @Override
     public CandidateDto createCandidate(CandidateDto candidateToCreateDto) {
         Candidate candidateToCreate = candidateToCreateDto.convertDtoToEntity();
-        Candidate createdCandidate;
-        createdCandidate = candidateRepository.save(candidateToCreate);
-        System.out.println(createdCandidate);
-        System.out.println(candidateToCreate);
+        Candidate createdCandidate = candidateRepository.save(candidateToCreate);
         return createdCandidate.convertEntityToDto();
     }
 

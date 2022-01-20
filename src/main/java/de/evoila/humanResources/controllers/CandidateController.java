@@ -1,8 +1,9 @@
-package de.evoila.personalAbteilung.controllers;
+package de.evoila.humanResources.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import de.evoila.personalAbteilung.dtos.CandidateDto;
-import de.evoila.personalAbteilung.services.CandidateService;
+import com.fasterxml.jackson.annotation.JsonView;
+import de.evoila.humanResources.dtos.CandidateDto;
+import de.evoila.humanResources.services.CandidateService;
+import de.evoila.humanResources.views.CandidateViews;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +23,16 @@ public class CandidateController {
         return candidateService.getAllCandidates();
     }
 
+    @JsonView(CandidateViews.Normal.class)
     @GetMapping("/{id}")
-    public String findCandidateById(@PathVariable Long id) throws JsonProcessingException {
-        return candidateService.findCandidateByIdNormal(id);
+    public CandidateDto findCandidateById(@PathVariable Long id) {
+        return candidateService.findCandidateById(id);
     }
 
+    @JsonView(CandidateViews.Hr.class)
     @GetMapping("/hr/{id}")
-    public String findCandidateByIdHr(@PathVariable Long id) throws JsonProcessingException {
-        return candidateService.findCandidateByIdHr(id);
+    public CandidateDto findCandidateByIdHr(@PathVariable Long id) {
+        return candidateService.findCandidateById(id);
     }
 
     @PostMapping

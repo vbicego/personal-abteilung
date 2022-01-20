@@ -1,6 +1,6 @@
-package de.evoila.personalAbteilung.repositories;
+package de.evoila.humanResources.repositories;
 
-import de.evoila.personalAbteilung.models.Candidate;
+import de.evoila.humanResources.models.Candidate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

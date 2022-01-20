@@ -1,4 +1,4 @@
-package de.evoila.personalAbteilung.exceptions;
+package de.evoila.humanResources.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

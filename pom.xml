@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>de.evoila</groupId>
-    <artifactId>personalAbteilung</artifactId>
+    <artifactId>humanResources</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>personalAbteilung</name>
-    <description>Personal Abteilung Simulator</description>
+    <name>humanResources</name>
+    <description>Human Resources Simulator</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -33,6 +33,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>2.0.206</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -53,11 +54,22 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>8.4.1</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+            </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

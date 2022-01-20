@@ -1,11 +1,11 @@
-package de.evoila.personalAbteilung;
+package de.evoila.humanResources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.evoila.personalAbteilung.controllers.CandidateController;
-import de.evoila.personalAbteilung.dtos.CandidateDto;
-import de.evoila.personalAbteilung.exceptions.CandidateNotFoundException;
-import de.evoila.personalAbteilung.services.CandidateService;
-import de.evoila.personalAbteilung.views.CandidateViews;
+import de.evoila.humanResources.controllers.CandidateController;
+import de.evoila.humanResources.dtos.CandidateDto;
+import de.evoila.humanResources.exceptions.CandidateNotFoundException;
+import de.evoila.humanResources.services.CandidateService;
+import de.evoila.humanResources.views.CandidateViews;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,9 +15,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,7 +30,7 @@ public class CandidateControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     @MockBean
     CandidateService candidateService;
@@ -50,13 +52,14 @@ public class CandidateControllerTest {
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/candidate"))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(candidateDtoList)));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(candidateDtoList)));
     }
 
     @Test
     public void findCandidateByIdNormalShouldReturnOkAndTheCorrespondentCandidate() throws Exception {
-        Mockito.doReturn(objectMapper.writerWithView(CandidateViews.Normal.class).writeValueAsString(c1Dto)).when(candidateService).findCandidateByIdNormal(1L);
+        Mockito.doReturn(c1Dto).when(candidateService).findCandidateById(1L);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/candidate/1"))
@@ -66,7 +69,7 @@ public class CandidateControllerTest {
 
     @Test
     public void findCandidateByIdNormalShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
-        Mockito.when(candidateService.findCandidateByIdNormal(5L)).thenThrow(new CandidateNotFoundException(5L));
+        Mockito.when(candidateService.findCandidateById(5L)).thenThrow(new CandidateNotFoundException(5L));
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/candidate/5"))
@@ -76,7 +79,7 @@ public class CandidateControllerTest {
 
     @Test
     public void findCandidateByIdHrShouldReturnOkAndTheCorrespondentCandidate() throws Exception {
-        Mockito.doReturn(objectMapper.writerWithView(CandidateViews.Hr.class).writeValueAsString(c1Dto)).when(candidateService).findCandidateByIdHr(1L);
+        Mockito.doReturn(c1Dto).when(candidateService).findCandidateById(1L);
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/candidate/hr/1"))
@@ -86,7 +89,7 @@ public class CandidateControllerTest {
 
     @Test
     public void findCandidateByIdHrShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
-        Mockito.when(candidateService.findCandidateByIdHr(5L)).thenThrow(new CandidateNotFoundException(5L));
+        Mockito.when(candidateService.findCandidateById(5L)).thenThrow(new CandidateNotFoundException(5L));
 
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/candidate/hr/5"))

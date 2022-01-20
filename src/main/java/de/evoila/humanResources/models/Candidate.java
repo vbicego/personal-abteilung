@@ -1,10 +1,7 @@
-package de.evoila.personalAbteilung.models;
+package de.evoila.humanResources.models;
 
-import de.evoila.personalAbteilung.dtos.CandidateDto;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import de.evoila.humanResources.dtos.CandidateDto;
+import lombok.*;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.Entity;
@@ -41,4 +38,5 @@ public class Candidate {
         this.email = email;
         this.desiredSalary = desiredSalary;
     }
+
 }

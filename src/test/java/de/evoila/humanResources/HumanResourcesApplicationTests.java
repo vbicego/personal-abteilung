@@ -1,10 +1,10 @@
-package de.evoila.personalAbteilung;
+package de.evoila.humanResources;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PersonalAbteilungApplicationTests {
+class HumanResourcesApplicationTests {
 
 	@Test
 	void contextLoads() {
