@@ -162,5 +162,54 @@ public class CandidateControllerIT {
                 .andExpect(content().string("Candidate with id: 5 not found."));
     }
 
+    @Test
+    public void updateCandidateShouldReturnOkAndTheUpdatedCandidate() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .put("/candidate/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("    {\n" +
+                                "        \"firstName\": \"Marylane\",\n" +
+                                "        \"lastName\": \"Janeckson\",\n" +
+                                "        \"email\": \"mary.jane@gmail.com\",\n" +
+                                "        \"desiredSalary\": 10500\n" +
+                                "    }"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{\n" +
+                        "    \"id\": 2,\n" +
+                        "    \"firstName\": \"Marylane\",\n" +
+                        "    \"lastName\": \"Janeckson\",\n" +
+                        "    \"email\": \"mary.jane@gmail.com\",\n" +
+                        "    \"desiredSalary\": 10500\n" +
+                        "}"));
+    }
+
+    @Test
+    public void updateCandidateShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .put("/candidate/5")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("    {\n" +
+                                "        \"firstName\": \"Vic\",\n" +
+                                "        \"lastName\": \"Mic\",\n" +
+                                "        \"email\": \"v.m@gmail.com\",\n" +
+                                "        \"desiredSalary\": 4500\n" +
+                                "    }"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Candidate with id: 5 not found."));
+    }
+
+    @Test
+    public void updateCandidateShouldReturnBadRequestWhenTheDataIsInvalid() throws Exception {
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .put("/candidate/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("    {\n" +
+                                "        \"firstName\": \"Vic\",\n" +
+                                "        \"lastName\": \"Mic\",\n" +
+                                "        \"email\": \"v.mgmail.com\",\n" +
+                                "        \"desiredSalary\": 4500\n" +
+                                "    }"))
+                .andExpect(status().isBadRequest());
+    }
 
 }
