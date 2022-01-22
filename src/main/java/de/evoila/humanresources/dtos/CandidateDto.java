@@ -1,8 +1,8 @@
-package de.evoila.humanResources.dtos;
+package de.evoila.humanresources.dtos;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import de.evoila.humanResources.models.Candidate;
-import de.evoila.humanResources.views.CandidateViews;
+import de.evoila.humanresources.models.Candidate;
+import de.evoila.humanresources.views.CandidateViews;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -35,15 +35,8 @@ public class CandidateDto {
     @JsonView(CandidateViews.Hr.class)
     private Long desiredSalary;
 
-    public Candidate convertDtoToEntity (){
+    public Candidate convertDtoToEntity() {
         return new ModelMapper().map(this, Candidate.class);
-    }
-
-    public CandidateDto(String firstName, String lastName, String email, Long desiredSalary) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.desiredSalary = desiredSalary;
     }
 
 }

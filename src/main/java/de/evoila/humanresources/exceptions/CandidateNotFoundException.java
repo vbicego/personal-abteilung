@@ -1,4 +1,4 @@
-package de.evoila.humanResources.exceptions;
+package de.evoila.humanresources.exceptions;
 
 public class CandidateNotFoundException extends RuntimeException {
 

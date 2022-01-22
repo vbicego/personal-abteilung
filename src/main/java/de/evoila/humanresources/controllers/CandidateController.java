@@ -1,9 +1,9 @@
-package de.evoila.humanResources.controllers;
+package de.evoila.humanresources.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import de.evoila.humanResources.dtos.CandidateDto;
-import de.evoila.humanResources.services.CandidateService;
-import de.evoila.humanResources.views.CandidateViews;
+import de.evoila.humanresources.dtos.CandidateDto;
+import de.evoila.humanresources.services.CandidateService;
+import de.evoila.humanresources.views.CandidateViews;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +46,8 @@ public class CandidateController {
     }
 
     @PutMapping("/{id}")
-    public CandidateDto updateCandidate(@RequestBody @Valid CandidateDto candidateToUpdate, @PathVariable Long id) {
-        return candidateService.updateCandidate(candidateToUpdate, id);
+    public CandidateDto updateCandidate(@RequestBody @Valid CandidateDto candidateToUpdateDto, @PathVariable Long id) {
+        return candidateService.updateCandidate(candidateToUpdateDto, id);
     }
 
 }

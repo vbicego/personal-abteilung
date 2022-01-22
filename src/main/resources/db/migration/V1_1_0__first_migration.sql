@@ -1,5 +1,4 @@
 
-
 CREATE TABLE candidate (
   id BIGINT AUTO_INCREMENT NOT NULL,
    first_name VARCHAR(255) NULL,

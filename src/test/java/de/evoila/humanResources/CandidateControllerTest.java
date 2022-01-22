@@ -1,11 +1,11 @@
 package de.evoila.humanResources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.evoila.humanResources.controllers.CandidateController;
-import de.evoila.humanResources.dtos.CandidateDto;
-import de.evoila.humanResources.exceptions.CandidateNotFoundException;
-import de.evoila.humanResources.services.CandidateService;
-import de.evoila.humanResources.views.CandidateViews;
+import de.evoila.humanresources.controllers.CandidateController;
+import de.evoila.humanresources.dtos.CandidateDto;
+import de.evoila.humanresources.exceptions.CandidateNotFoundException;
+import de.evoila.humanresources.services.CandidateService;
+import de.evoila.humanresources.views.CandidateViews;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -41,8 +41,17 @@ public class CandidateControllerTest {
 
     @BeforeEach
     public void init() {
-        c1Dto = new CandidateDto("Peter", "Parker", "pp@gmail.com", 3500L);
-        c2Dto = new CandidateDto("Mary", "Jane", "mj@gmail.com", 4500L);
+        c1Dto = new CandidateDto();
+        c1Dto.setFirstName("Peter");
+        c1Dto.setLastName("Parker");
+        c1Dto.setEmail("pp@gmail.com");
+        c1Dto.setDesiredSalary(3500L);
+
+        c2Dto = new CandidateDto();
+        c2Dto.setFirstName("Mary");
+        c2Dto.setLastName("Jane");
+        c2Dto.setEmail("mj@gmail.com");
+        c2Dto.setDesiredSalary(4500L);
         candidateDtoList = List.of(c1Dto, c2Dto);
     }
 

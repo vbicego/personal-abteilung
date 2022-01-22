@@ -1,8 +1,9 @@
 package de.evoila.humanResources;
 
-import org.flywaydb.core.Flyway;
-import org.junit.jupiter.api.BeforeEach;
+import org.flywaydb.test.annotation.FlywayTest;
+import org.flywaydb.test.junit5.FlywayTestExtension;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,13 +20,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@ExtendWith({FlywayTestExtension.class})
 public class CandidateControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    Flyway flyway;
 
     private static final String EXPECTED_LIST_CANDIDATES = "[\n" +
             "    {\n" +
@@ -65,13 +64,8 @@ public class CandidateControllerIT {
             "    \"email\": \"matt.parker@gmail.com\"\n" +
             "}";
 
-    @BeforeEach
-    public void init() {
-        flyway.clean();
-        flyway.migrate();
-    }
-
     @Test
+    @FlywayTest
     void getAllCandidatesShouldReturnOkAndListOfCandidates() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .get("/candidate"))
@@ -113,6 +107,7 @@ public class CandidateControllerIT {
     }
 
     @Test
+    @FlywayTest
     public void createCandidateShouldReturnOkAndTheCreatedCandidate() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/candidate")
@@ -163,6 +158,7 @@ public class CandidateControllerIT {
     }
 
     @Test
+    @FlywayTest
     public void updateCandidateShouldReturnOkAndTheUpdatedCandidate() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/candidate/2")

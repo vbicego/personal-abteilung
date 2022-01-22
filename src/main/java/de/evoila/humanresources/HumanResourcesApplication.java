@@ -1,4 +1,4 @@
-package de.evoila.humanResources;
+package de.evoila.humanresources;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

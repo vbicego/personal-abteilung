@@ -1,7 +1,9 @@
-package de.evoila.humanResources.models;
+package de.evoila.humanresources.models;
 
-import de.evoila.humanResources.dtos.CandidateDto;
-import lombok.*;
+import de.evoila.humanresources.dtos.CandidateDto;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.Entity;
@@ -10,10 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@RequiredArgsConstructor
-@Setter
+@NoArgsConstructor
 @Getter
-@ToString
+@Setter
 public class Candidate {
 
     @Id
@@ -28,15 +29,8 @@ public class Candidate {
 
     private Long desiredSalary;
 
-    public CandidateDto convertEntityToDto(){
+    public CandidateDto convertEntityToDto() {
         return new ModelMapper().map(this, CandidateDto.class);
-    }
-
-    public Candidate(String firstName, String lastName, String email, Long desiredSalary) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.desiredSalary = desiredSalary;
     }
 
 }

@@ -1,9 +1,9 @@
-package de.evoila.humanResources.services;
+package de.evoila.humanresources.services;
 
-import de.evoila.humanResources.dtos.CandidateDto;
-import de.evoila.humanResources.exceptions.CandidateNotFoundException;
-import de.evoila.humanResources.models.Candidate;
-import de.evoila.humanResources.repositories.CandidateRepository;
+import de.evoila.humanresources.dtos.CandidateDto;
+import de.evoila.humanresources.exceptions.CandidateNotFoundException;
+import de.evoila.humanresources.models.Candidate;
+import de.evoila.humanresources.repositories.CandidateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +33,7 @@ public class CandidateServiceImp implements CandidateService {
 
     @Override
     public CandidateDto createCandidate(CandidateDto candidateToCreateDto) {
-        Candidate candidateToCreate = candidateToCreateDto.convertDtoToEntity();
-        Candidate createdCandidate = candidateRepository.save(candidateToCreate);
+        Candidate createdCandidate = candidateRepository.save(candidateToCreateDto.convertDtoToEntity());
         return createdCandidate.convertEntityToDto();
     }
 
@@ -56,4 +55,5 @@ public class CandidateServiceImp implements CandidateService {
         Candidate updatedCandidate = candidateRepository.save(foundCandidate);
         return updatedCandidate.convertEntityToDto();
     }
+
 }

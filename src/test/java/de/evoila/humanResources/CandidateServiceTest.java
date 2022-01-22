@@ -1,10 +1,10 @@
 package de.evoila.humanResources;
 
-import de.evoila.humanResources.dtos.CandidateDto;
-import de.evoila.humanResources.exceptions.CandidateNotFoundException;
-import de.evoila.humanResources.models.Candidate;
-import de.evoila.humanResources.repositories.CandidateRepository;
-import de.evoila.humanResources.services.CandidateServiceImp;
+import de.evoila.humanresources.dtos.CandidateDto;
+import de.evoila.humanresources.exceptions.CandidateNotFoundException;
+import de.evoila.humanresources.models.Candidate;
+import de.evoila.humanresources.repositories.CandidateRepository;
+import de.evoila.humanresources.services.CandidateServiceImp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,12 +41,32 @@ public class CandidateServiceTest {
     @BeforeEach
     void setUp() {
 
-        c1Dto = new CandidateDto("Peter", "Parker", "pp@gmail.com", 3500L);
-        c2Dto = new CandidateDto("Mary", "Jane", "mj@gmail.com", 4500L);
+        c1Dto = new CandidateDto();
+        c1Dto.setFirstName("Peter");
+        c1Dto.setLastName("Parker");
+        c1Dto.setEmail("pp@gmail.com");
+        c1Dto.setDesiredSalary(3500L);
+
+        c2Dto = new CandidateDto();
+        c2Dto.setFirstName("Mary");
+        c2Dto.setLastName("Jane");
+        c2Dto.setEmail("mj@gmail.com");
+        c2Dto.setDesiredSalary(4500L);
+
         candidateDtoList = List.of(c1Dto, c2Dto);
 
-        c1 = new Candidate("Peter", "Parker", "pp@gmail.com", 3500L);
-        c2 = new Candidate("Mary", "Jane", "mj@gmail.com", 4500L);
+        c1 = new Candidate();
+        c1.setFirstName("Peter");
+        c1.setLastName("Parker");
+        c1.setEmail("pp@gmail.com");
+        c1.setDesiredSalary(3500L);
+
+        c2 = new Candidate();
+        c2.setFirstName("Mary");
+        c2.setLastName("Jane");
+        c2.setEmail("mj@gmail.com");
+        c2.setDesiredSalary(4500L);
+
         candidateList = List.of(c1, c2);
     }
 
