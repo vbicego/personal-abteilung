@@ -5,6 +5,7 @@ import de.evoila.humanResources.exceptions.CandidateNotFoundException;
 import de.evoila.humanResources.models.Candidate;
 import de.evoila.humanResources.repositories.CandidateRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +22,20 @@ public class CandidateServiceImp implements CandidateService {
     public List<CandidateDto> getAllCandidates() {
         List<Candidate> candidateList = candidateRepository.findAll();
         return candidateList.stream()
-                .map(Candidate::convertEntityToDto)
+                .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public CandidateDto findCandidateById(Long id) {
         Candidate foundCandidate = candidateRepository.findById(id).orElseThrow(() -> new CandidateNotFoundException(id));
-        return foundCandidate.convertEntityToDto();
+        return convertEntityToDto(foundCandidate);
     }
 
     @Override
     public CandidateDto createCandidate(CandidateDto candidateToCreateDto) {
-        Candidate createdCandidate = candidateRepository.save(candidateToCreateDto.convertDtoToEntity());
-        return createdCandidate.convertEntityToDto();
+        Candidate createdCandidate = candidateRepository.save(convertDtoToEntity(candidateToCreateDto));
+        return convertEntityToDto(createdCandidate);
     }
 
     @Override
@@ -53,7 +54,15 @@ public class CandidateServiceImp implements CandidateService {
         foundCandidate.setDesiredSalary(candidateToUpdate.getDesiredSalary());
 
         Candidate updatedCandidate = candidateRepository.save(foundCandidate);
-        return updatedCandidate.convertEntityToDto();
+        return convertEntityToDto(updatedCandidate);
+    }
+
+    private Candidate convertDtoToEntity(CandidateDto candidateDto) {
+        return new ModelMapper().map(candidateDto, Candidate.class);
+    }
+
+    private CandidateDto convertEntityToDto(Candidate candidate) {
+        return new ModelMapper().map(candidate, CandidateDto.class);
     }
 
 }
