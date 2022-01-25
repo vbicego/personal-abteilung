@@ -1,5 +1,6 @@
 package de.evoila.humanResources.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import de.evoila.humanResources.views.CandidateViews;
 import lombok.Data;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 public class CandidateDto {
 
     @JsonView(CandidateViews.Normal.class)
+    @JsonProperty(access=JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @NotNull(message = "First name could not be empty")

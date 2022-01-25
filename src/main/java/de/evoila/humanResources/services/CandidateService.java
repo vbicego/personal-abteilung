@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface CandidateService {
 
-    public abstract List<CandidateDto> getAllCandidates();
+    public List<CandidateDto> getAllCandidates();
 
-    public abstract CandidateDto findCandidateById(Long id);
+    public CandidateDto findCandidateById(Long id);
 
-    public abstract CandidateDto createCandidate(CandidateDto candidateToCreateDto);
+    public CandidateDto createCandidate(CandidateDto candidateToCreateDto);
 
-    public abstract void deleteCandidate(Long id);
+    public void deleteCandidate(Long id);
 
-    public abstract CandidateDto updateCandidate(CandidateDto candidateToUpdateDto, Long id);
+    public CandidateDto updateCandidate(CandidateDto candidateToUpdateDto, Long id);
 
 }
