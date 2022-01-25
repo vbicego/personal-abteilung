@@ -91,7 +91,7 @@ public class CandidateControllerTest {
         Mockito.doReturn(c1Dto).when(candidateService).findCandidateById(1L);
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/hr/1"))
+                        .get("/candidate/1/hr-view"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writerWithView(CandidateViews.Hr.class).writeValueAsString(c1Dto)));
     }
@@ -101,7 +101,7 @@ public class CandidateControllerTest {
         Mockito.when(candidateService.findCandidateById(5L)).thenThrow(new CandidateNotFoundException(5L));
 
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/hr/5"))
+                        .get("/candidate/5/hr-view"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Candidate with id: 5 not found."));
     }

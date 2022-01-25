@@ -59,6 +59,7 @@ public class CandidateControllerIT {
             "    }";
 
     private static final String CANDIDATE_ID_1_NORMAL = "{\n" +
+            "    \"id\": 1,\n" +
             "    \"firstName\": \"Matt\",\n" +
             "    \"lastName\": \"Parker\",\n" +
             "    \"email\": \"matt.parker@gmail.com\"\n" +
@@ -93,7 +94,7 @@ public class CandidateControllerIT {
     @Test
     public void findCandidateByIdHrShouldReturnOkAndTheCorrespondentCandidate() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/hr/1"))
+                        .get("/candidate/1/hr-view"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(CANDIDATE_ID_1_HR));
     }
@@ -101,7 +102,7 @@ public class CandidateControllerIT {
     @Test
     public void findCandidateByIdHrShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/hr/5"))
+                        .get("/candidate/5/hr-view"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Candidate with id: 5 not found."));
     }

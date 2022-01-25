@@ -30,7 +30,7 @@ public class CandidateController {
     }
 
     @JsonView(CandidateViews.Hr.class)
-    @GetMapping("/hr/{id}")
+    @GetMapping("/{id}/hr-view")
     public CandidateDto findCandidateByIdHr(@PathVariable Long id) {
         return candidateService.findCandidateById(id);
     }

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CandidateDto {
 
-    @JsonView(CandidateViews.Hr.class)
+    @JsonView(CandidateViews.Normal.class)
     private Long id;
 
     @NotNull(message = "First name could not be empty")
