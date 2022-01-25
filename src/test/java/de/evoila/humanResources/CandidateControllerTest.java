@@ -1,11 +1,11 @@
 package de.evoila.humanResources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.evoila.humanresources.controllers.CandidateController;
-import de.evoila.humanresources.dtos.CandidateDto;
-import de.evoila.humanresources.exceptions.CandidateNotFoundException;
-import de.evoila.humanresources.services.CandidateService;
-import de.evoila.humanresources.views.CandidateViews;
+import de.evoila.humanResources.controllers.CandidateController;
+import de.evoila.humanResources.dtos.CandidateDto;
+import de.evoila.humanResources.exceptions.CandidateNotFoundException;
+import de.evoila.humanResources.services.CandidateService;
+import de.evoila.humanResources.views.CandidateViews;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

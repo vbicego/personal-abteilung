@@ -1,9 +1,9 @@
-package de.evoila.humanresources.services;
+package de.evoila.humanResources.services;
 
-import de.evoila.humanresources.dtos.CandidateDto;
-import de.evoila.humanresources.exceptions.CandidateNotFoundException;
-import de.evoila.humanresources.models.Candidate;
-import de.evoila.humanresources.repositories.CandidateRepository;
+import de.evoila.humanResources.dtos.CandidateDto;
+import de.evoila.humanResources.exceptions.CandidateNotFoundException;
+import de.evoila.humanResources.models.Candidate;
+import de.evoila.humanResources.repositories.CandidateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

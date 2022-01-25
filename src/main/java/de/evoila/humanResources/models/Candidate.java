@@ -1,6 +1,6 @@
-package de.evoila.humanresources.models;
+package de.evoila.humanResources.models;
 
-import de.evoila.humanresources.dtos.CandidateDto;
+import de.evoila.humanResources.dtos.CandidateDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

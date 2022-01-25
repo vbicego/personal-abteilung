@@ -1,4 +1,4 @@
-package de.evoila.humanresources;
+package de.evoila.humanResources.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;

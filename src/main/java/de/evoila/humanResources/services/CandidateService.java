@@ -1,6 +1,6 @@
-package de.evoila.humanresources.services;
+package de.evoila.humanResources.services;
 
-import de.evoila.humanresources.dtos.CandidateDto;
+import de.evoila.humanResources.dtos.CandidateDto;
 
 import java.util.List;
 

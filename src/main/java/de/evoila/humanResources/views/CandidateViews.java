@@ -1,4 +1,4 @@
-package de.evoila.humanresources.views;
+package de.evoila.humanResources.views;
 
 public class CandidateViews {
 

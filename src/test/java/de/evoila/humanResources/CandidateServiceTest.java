@@ -1,10 +1,10 @@
 package de.evoila.humanResources;
 
-import de.evoila.humanresources.dtos.CandidateDto;
-import de.evoila.humanresources.exceptions.CandidateNotFoundException;
-import de.evoila.humanresources.models.Candidate;
-import de.evoila.humanresources.repositories.CandidateRepository;
-import de.evoila.humanresources.services.CandidateServiceImp;
+import de.evoila.humanResources.dtos.CandidateDto;
+import de.evoila.humanResources.exceptions.CandidateNotFoundException;
+import de.evoila.humanResources.models.Candidate;
+import de.evoila.humanResources.repositories.CandidateRepository;
+import de.evoila.humanResources.services.CandidateServiceImp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
