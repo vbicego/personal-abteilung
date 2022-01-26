@@ -18,6 +18,7 @@ public class CandidateController {
 
     private final CandidateService candidateService;
 
+    @JsonView(CandidateViews.Hr.class)
     @GetMapping
     public List<CandidateDto> getAllCandidates() {
         return candidateService.getAllCandidates();
@@ -45,6 +46,7 @@ public class CandidateController {
         candidateService.deleteCandidate(id);
     }
 
+    @JsonView(CandidateViews.Hr.class)
     @PutMapping("/{id}")
     public CandidateDto updateCandidate(@RequestBody @Valid CandidateDto candidateToUpdateDto, @PathVariable Long id) {
         return candidateService.updateCandidate(candidateToUpdateDto, id);

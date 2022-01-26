@@ -2,6 +2,7 @@ package de.evoila.humanResources;
 
 import org.flywaydb.test.annotation.FlywayTest;
 import org.flywaydb.test.junit5.FlywayTestExtension;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @ExtendWith({FlywayTestExtension.class})
-public class CandidateControllerIT {
+class CandidateControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -65,46 +66,54 @@ public class CandidateControllerIT {
             "    \"email\": \"matt.parker@gmail.com\"\n" +
             "}";
 
-    @Test
+    @Nested
     @FlywayTest
-    void getAllCandidatesShouldReturnOkAndListOfCandidates() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(EXPECTED_LIST_CANDIDATES));
-    }
+    class GettersTest {
 
-    @Test
-    public void findCandidateByIdNormalShouldReturnOkAndTheCorrespondentCandidate() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(CANDIDATE_ID_1_NORMAL));
-    }
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Test
-    public void findCandidateByIdNormalShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/5"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Candidate with id: 5 not found."));
-    }
+        @Test
+        void getAllCandidatesShouldReturnOkAndListOfCandidates() throws Exception {
+            this.mockMvc.perform(MockMvcRequestBuilders
+                            .get("/candidate"))
+                    .andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(MockMvcResultMatchers.content().json(EXPECTED_LIST_CANDIDATES, true));
+        }
 
-    @Test
-    public void findCandidateByIdHrShouldReturnOkAndTheCorrespondentCandidate() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/1/hr-view"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(CANDIDATE_ID_1_HR));
-    }
+        @Test
+        public void findCandidateByIdNormalShouldReturnOkAndTheCorrespondentCandidate() throws Exception {
+            this.mockMvc.perform(MockMvcRequestBuilders
+                            .get("/candidate/1"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(CANDIDATE_ID_1_NORMAL, true));
+        }
 
-    @Test
-    public void findCandidateByIdHrShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/5/hr-view"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Candidate with id: 5 not found."));
+        @Test
+        public void findCandidateByIdNormalShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
+            this.mockMvc.perform(MockMvcRequestBuilders
+                            .get("/candidate/5"))
+                    .andExpect(status().isNotFound())
+                    .andExpect(content().string("Candidate with id: 5 not found."));
+        }
+
+        @Test
+        public void findCandidateByIdHrShouldReturnOkAndTheCorrespondentCandidate() throws Exception {
+            this.mockMvc.perform(MockMvcRequestBuilders
+                            .get("/candidate/1/hr-view"))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(CANDIDATE_ID_1_HR, true));
+        }
+
+        @Test
+        public void findCandidateByIdHrShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
+            this.mockMvc.perform(MockMvcRequestBuilders
+                            .get("/candidate/5/hr-view"))
+                    .andExpect(status().isNotFound())
+                    .andExpect(content().string("Candidate with id: 5 not found."));
+        }
+
     }
 
     @Test
@@ -126,10 +135,11 @@ public class CandidateControllerIT {
                         "    \"lastName\": \"Mic\",\n" +
                         "    \"email\": \"v.m@gmail.com\",\n" +
                         "    \"desiredSalary\": 4500\n" +
-                        "}"));
+                        "}", true));
     }
 
     @Test
+    @FlywayTest
     public void createCandidateShouldReturnBadRequestWhenTheDataIsInvalid() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .post("/candidate")
@@ -144,6 +154,7 @@ public class CandidateControllerIT {
     }
 
     @Test
+    @FlywayTest
     public void deleteCandidateShouldReturnOk() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/candidate/3"))
@@ -151,6 +162,7 @@ public class CandidateControllerIT {
     }
 
     @Test
+    @FlywayTest
     public void deleteCandidateShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .delete("/candidate/5"))
@@ -177,10 +189,11 @@ public class CandidateControllerIT {
                         "    \"lastName\": \"Janeckson\",\n" +
                         "    \"email\": \"mary.jane@gmail.com\",\n" +
                         "    \"desiredSalary\": 10500\n" +
-                        "}"));
+                        "}", true));
     }
 
     @Test
+    @FlywayTest
     public void updateCandidateShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/candidate/5")
@@ -196,6 +209,7 @@ public class CandidateControllerIT {
     }
 
     @Test
+    @FlywayTest
     public void updateCandidateShouldReturnBadRequestWhenTheDataIsInvalid() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders
                         .put("/candidate/2")

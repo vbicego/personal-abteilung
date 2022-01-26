@@ -1,39 +1,30 @@
 package de.evoila.humanResources;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.evoila.humanResources.controllers.CandidateController;
 import de.evoila.humanResources.dtos.CandidateDto;
 import de.evoila.humanResources.exceptions.CandidateNotFoundException;
-import de.evoila.humanResources.services.CandidateService;
-import de.evoila.humanResources.views.CandidateViews;
+import de.evoila.humanResources.services.CandidateServiceImp;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@WebMvcTest(CandidateController.class)
-public class CandidateControllerTest {
+@ExtendWith(MockitoExtension.class)
+class CandidateControllerTest {
 
-    @Autowired
-    MockMvc mockMvc;
+    @Mock
+    private CandidateServiceImp candidateServiceImp;
 
-    @Autowired
-    ObjectMapper objectMapper;
-
-    @MockBean
-    CandidateService candidateService;
+    @InjectMocks
+    private CandidateController candidateController;
 
     private CandidateDto c1Dto;
     private CandidateDto c2Dto;
@@ -56,135 +47,74 @@ public class CandidateControllerTest {
     }
 
     @Test
-    public void getAllCandidatesShouldReturnOkAndListOfCandidates() throws Exception {
-        Mockito.doReturn(candidateDtoList).when(candidateService).getAllCandidates();
+    public void getAllCandidatesShouldReturnOkAndListOfCandidates() {
+        Mockito.doReturn(candidateDtoList).when(candidateServiceImp).getAllCandidates();
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(candidateDtoList)));
+        assertEquals(candidateDtoList, candidateController.getAllCandidates());
     }
 
     @Test
-    public void findCandidateByIdNormalShouldReturnOkAndTheCorrespondentCandidate() throws Exception {
-        Mockito.doReturn(c1Dto).when(candidateService).findCandidateById(1L);
+    public void findCandidateByIdNormalShouldReturnOkAndTheCorrespondentCandidate() {
+        Mockito.doReturn(c1Dto).when(candidateServiceImp).findCandidateById(1L);
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writerWithView(CandidateViews.Normal.class).writeValueAsString(c1Dto)));
+        assertEquals(c1Dto, candidateController.findCandidateById(1L));
     }
 
     @Test
-    public void findCandidateByIdNormalShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
-        Mockito.when(candidateService.findCandidateById(5L)).thenThrow(new CandidateNotFoundException(5L));
+    public void findCandidateByIdNormalShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() {
+        Mockito.when(candidateServiceImp.findCandidateById(5L)).thenThrow(new CandidateNotFoundException(5L));
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/5"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Candidate with id: 5 not found."));
+        CandidateNotFoundException exp = Assertions.assertThrows(CandidateNotFoundException.class, () -> candidateController.findCandidateById(5L));
+
+        assertEquals("Candidate with id: 5 not found.", exp.getMessage());
     }
 
     @Test
-    public void findCandidateByIdHrShouldReturnOkAndTheCorrespondentCandidate() throws Exception {
-        Mockito.doReturn(c1Dto).when(candidateService).findCandidateById(1L);
+    public void findCandidateByIdHrShouldReturnOkAndTheCorrespondentCandidate() {
+        Mockito.doReturn(c1Dto).when(candidateServiceImp).findCandidateById(1L);
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/1/hr-view"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writerWithView(CandidateViews.Hr.class).writeValueAsString(c1Dto)));
+        assertEquals(c1Dto, candidateController.findCandidateByIdHr(1L));
     }
 
     @Test
-    public void findCandidateByIdHrShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
-        Mockito.when(candidateService.findCandidateById(5L)).thenThrow(new CandidateNotFoundException(5L));
+    public void findCandidateByIdHrShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() {
+        Mockito.when(candidateServiceImp.findCandidateById(5L)).thenThrow(new CandidateNotFoundException(5L));
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .get("/candidate/5/hr-view"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Candidate with id: 5 not found."));
+        CandidateNotFoundException exp = Assertions.assertThrows(CandidateNotFoundException.class, () -> candidateController.findCandidateByIdHr(5L));
+
+        assertEquals("Candidate with id: 5 not found.", exp.getMessage());
     }
 
     @Test
-    public void createCandidateShouldReturnOkAndTheCreatedCandidate() throws Exception {
-        Mockito.doReturn(c2Dto).when(candidateService).createCandidate(c2Dto);
+    public void createCandidateShouldReturnOkAndTheCreatedCandidate() {
+        Mockito.doReturn(c2Dto).when(candidateServiceImp).createCandidate(c2Dto);
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/candidate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(c2Dto)))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(c2Dto)));
+        assertEquals(c2Dto, candidateController.createCandidate(c2Dto));
     }
 
     @Test
-    public void createCandidateShouldReturnBadRequestWhenTheDataIsInvalid() throws Exception {
-        Mockito.doReturn(c1Dto).when(candidateService).createCandidate(c1Dto);
+    public void deleteCandidateShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() {
+        Mockito.doThrow(new CandidateNotFoundException(5L)).when(candidateServiceImp).deleteCandidate(5L);
 
-        c1Dto.setDesiredSalary(null);
+        CandidateNotFoundException exp = Assertions.assertThrows(CandidateNotFoundException.class, () -> candidateController.deleteCandidate(5L));
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .post("/candidate")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(c1Dto)))
-                .andExpect(status().isBadRequest());
+        assertEquals("Candidate with id: 5 not found.", exp.getMessage());
     }
 
     @Test
-    public void deleteCandidateShouldReturnOk() throws Exception {
-        Mockito.doNothing().when(candidateService).deleteCandidate(1L);
+    public void updateCandidateShouldReturnOkAndTheUpdatedCandidate() {
+        Mockito.doReturn(c1Dto).when(candidateServiceImp).updateCandidate(c1Dto, 1L);
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/candidate/1"))
-                .andExpect(status().isOk());
+        assertEquals(c1Dto, candidateController.updateCandidate(c1Dto, 1L));
     }
 
     @Test
-    public void deleteCandidateShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
-        Mockito.doThrow(new CandidateNotFoundException(5L)).when(candidateService).deleteCandidate(5L);
+    public void updateCandidateShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() {
+        Mockito.when(candidateServiceImp.updateCandidate(c2Dto, 5L)).thenThrow(new CandidateNotFoundException(5L));
 
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/candidate/5"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Candidate with id: 5 not found."));
-    }
+        CandidateNotFoundException exp = Assertions.assertThrows(CandidateNotFoundException.class, () -> candidateController.updateCandidate(c2Dto, 5L));
 
-    @Test
-    public void updateCandidateShouldReturnOkAndTheUpdatedCandidate() throws Exception {
-        Mockito.doReturn(c1Dto).when(candidateService).updateCandidate(c1Dto, 1L);
-
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/candidate/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(c1Dto)))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(c1Dto)));
-    }
-
-    @Test
-    public void updateCandidateShouldReturnNotFoundWhenTheIdNotCorrespondToAnyCandidate() throws Exception {
-        Mockito.when(candidateService.updateCandidate(c2Dto, 5L)).thenThrow(new CandidateNotFoundException(5L));
-
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/candidate/5")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(c2Dto)))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Candidate with id: 5 not found."));
-    }
-
-    @Test
-    public void updateCandidateShouldReturnBadRequestWhenTheDataIsInvalid() throws Exception {
-        Mockito.doReturn(c1Dto).when(candidateService).updateCandidate(c1Dto, 2L);
-
-        c1Dto.setLastName(null);
-
-        this.mockMvc.perform(MockMvcRequestBuilders
-                        .put("/candidate/2")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(c1Dto)))
-                .andExpect(status().isBadRequest());
+        assertEquals("Candidate with id: 5 not found.", exp.getMessage());
     }
 
 }

@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,13 +22,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
-public class CandidateServiceTest {
+class CandidateServiceTest {
 
     @InjectMocks
-    CandidateServiceImp candidateServiceImp;
+    private CandidateServiceImp candidateServiceImp;
 
     @Mock
-    CandidateRepository candidateRepository;
+    private CandidateRepository candidateRepository;
 
     private CandidateDto c1Dto;
     private CandidateDto c2Dto;
@@ -79,15 +79,13 @@ public class CandidateServiceTest {
 
     @Test
     public void findCandidateByIdShouldReturnCandidateDto() {
-        Mockito.when(candidateRepository.findById(1L)).thenReturn(Optional.ofNullable(c1));
+        Mockito.when(candidateRepository.findById(1L)).thenReturn(Optional.of(c1));
 
         assertEquals(c1Dto, candidateServiceImp.findCandidateById(1L));
     }
 
     @Test
     public void findCandidateByIdShouldThrowAnExceptionWhenTheGivenIdNotCorrespondToAnyCandidate() {
-        Mockito.when(candidateRepository.findById(5L)).thenThrow(new CandidateNotFoundException(5L));
-
         CandidateNotFoundException exp = Assertions.assertThrows(CandidateNotFoundException.class, () -> candidateServiceImp.findCandidateById(5L));
 
         assertEquals("Candidate with id: 5 not found.", exp.getMessage());
@@ -95,15 +93,28 @@ public class CandidateServiceTest {
 
     @Test
     public void createCandidateShouldReturnCandidateDto() {
-        Mockito.when(candidateRepository.save(any(Candidate.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
+        long expectedId = 5;
 
-        assertEquals(c1Dto, candidateServiceImp.createCandidate(c1Dto));
+        Mockito.when(candidateRepository.save(any(Candidate.class))).thenAnswer((Answer<Candidate>) invocation -> {
+            Candidate entity = invocation.getArgument(0, Candidate.class);
+            entity.setId(expectedId);
+            return entity;
+        });
+
+        CandidateDto returnedDto = candidateServiceImp.createCandidate(c1Dto);
+
+        CandidateDto expectedDto = new CandidateDto();
+        expectedDto.setId(5L);
+        expectedDto.setFirstName("Peter");
+        expectedDto.setLastName("Parker");
+        expectedDto.setEmail("pp@gmail.com");
+        expectedDto.setDesiredSalary(3500L);
+
+        assertEquals(expectedDto, returnedDto);
     }
 
     @Test
     public void deleteCandidateShouldThrowAnExceptionWhenTheGivenIdNotCorrespondToAnyCandidate() {
-        Mockito.when(candidateRepository.findById(5L)).thenThrow(new CandidateNotFoundException(5L));
-
         CandidateNotFoundException exp = Assertions.assertThrows(CandidateNotFoundException.class, () -> candidateServiceImp.deleteCandidate(5L));
 
         assertEquals("Candidate with id: 5 not found.", exp.getMessage());
@@ -111,16 +122,29 @@ public class CandidateServiceTest {
 
     @Test
     public void updateCandidateShouldReturnCandidateDto() {
-        Mockito.when(candidateRepository.save(any(Candidate.class))).thenAnswer(AdditionalAnswers.returnsFirstArg());
-        Mockito.when(candidateRepository.findById(2L)).thenReturn(Optional.ofNullable(c2));
+        long expectedId = 1;
 
-        assertEquals(c2Dto, candidateServiceImp.updateCandidate(c2Dto, 2L));
+        Mockito.when(candidateRepository.findById(1L)).thenReturn(Optional.of(c1));
+        Mockito.when(candidateRepository.save(any(Candidate.class))).thenAnswer((Answer<Candidate>) invocation -> {
+            Candidate entity = invocation.getArgument(0, Candidate.class);
+            entity.setId(expectedId);
+            return entity;
+        });
+
+        CandidateDto returnedDto = candidateServiceImp.updateCandidate(c1Dto, 1L);
+
+        CandidateDto expectedDto = new CandidateDto();
+        expectedDto.setId(1L);
+        expectedDto.setFirstName("Peter");
+        expectedDto.setLastName("Parker");
+        expectedDto.setEmail("pp@gmail.com");
+        expectedDto.setDesiredSalary(3500L);
+
+        assertEquals(expectedDto, returnedDto);
     }
 
     @Test
     public void updateCandidateShouldRThrowAnExceptionWhenTheGivenIdNotCorrespondToAnyCandidate() {
-        Mockito.when(candidateRepository.findById(5L)).thenThrow(new CandidateNotFoundException(5L));
-
         CandidateNotFoundException exp = Assertions.assertThrows(CandidateNotFoundException.class, () -> candidateServiceImp.updateCandidate(c2Dto, 5L));
 
         assertEquals("Candidate with id: 5 not found.", exp.getMessage());
